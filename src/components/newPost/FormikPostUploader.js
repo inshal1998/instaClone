@@ -1,8 +1,16 @@
-import React, { useState } from 'react'
+import React, { createRef, useState } from 'react'
 import { Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import * as Yup from "yup";
 import { Formik } from 'formik';
 import { Divider } from 'react-native-elements';
+import Dialog, {
+    DialogTitle,
+    DialogContent,
+    DialogFooter,
+    DialogButton,
+    SlideAnimation,
+    ScaleAnimation,
+  } from 'react-native-popup-dialog';
 
 const FormikPostUploader = ({navigation}) => {
 
@@ -12,6 +20,8 @@ const FormikPostUploader = ({navigation}) => {
         caption : Yup.string().max(100 , "Caption has reached Max Character")
     }) 
     const [thumbnail, setthumbnail] = useState(PlacHolderImg)
+    const [slideAnimationDialog, setSlideAnimationDialog] = useState(false)
+    
     return (
         <Formik 
             initialValues={{caption:'' , imageUrl:""}}
@@ -26,9 +36,51 @@ const FormikPostUploader = ({navigation}) => {
             {({
                handleChange, handleBlur, handleSubmit, values, isValid, errors
             })=>(
-                <>
-                    <View style={{flexDirection:"row" }}>
-                        <Image source={{uri :thumbnail ? thumbnail : PlacHolderImg}} style={styles.image}/>
+                <View style={{height:"100%"}}>
+                    <View style={{flexDirection:"row"}}>
+                   
+                        <TouchableOpacity onPress={() => setSlideAnimationDialog(true)}>
+                            <Image source={{uri :thumbnail ? thumbnail : PlacHolderImg}} style={styles.image}/> 
+                            <Dialog
+                                onDismiss={() => {
+                                    setSlideAnimationDialog(false);
+                                }}
+                                onTouchOutside={() => {
+                                    setSlideAnimationDialog(false);
+                                }}
+                                visible={slideAnimationDialog}
+                                dialogTitle={
+                                    <DialogTitle
+                                    title="Choose To Update Profile"
+                                    />
+                                }
+                                dialogAnimation={
+                                    new SlideAnimation({slideFrom: 'bottom'})
+                                }>
+                                <DialogContent>
+                                    <View style={{left:25,padding:10,flexDirection:"row" ,width:"80%" , justifyContent:"space-evenly" , alignContent:"space-between"}}>
+                                        <View style={{width:"50%",height:60}}> 
+                                                <TouchableOpacity>
+                                                <Image
+                                                // https://cdn.pixabay.com/photo/2015/12/22/04/00/photo-1103594_1280.png
+                                                    style={{height:70,width:70,alignSelf:"center"}}
+                                                source={{uri:"https://cdn-icons-png.flaticon.com/512/833/833539.png"}}
+                                                />
+                                                </TouchableOpacity>
+                                        </View>
+                                        <View style={{width:"50%",height:40}}>
+                                                <TouchableOpacity>
+                                                <Image
+                                                    style={{height:70,width:70,alignSelf:"center"}}
+                                                    source={{uri:"https://cdn-icons.flaticon.com/png/512/238/premium/238438.png?token=exp=1635077856~hmac=f9b40f1053d5989867c1347ecee3a1e9"}}
+                                                />
+                                                </TouchableOpacity>
+                                        </View>
+                                        </View>
+                                </DialogContent>
+                            </Dialog>
+                        </TouchableOpacity>
+                        
                         <View style={styles.txtContainer}>
                             <TextInput
                                 style={styles.captionTxt}
@@ -60,8 +112,9 @@ const FormikPostUploader = ({navigation}) => {
                         )}
                     </View>
                     <View style={{marginBottom:20}}></View>
-                    <Button  color="#CAD5E2" onPress={handleSubmit} title="Submit" disabled={!isValid}/>
-                </>
+                    <Button  color="#CAD5E2" onPress={handleSubmit} title="Submit" disabled={!isValid}/>                   
+                </View>
+
                 )}
                 </Formik>
     )
@@ -107,6 +160,16 @@ const styles = StyleSheet.create({
         color:"white",
         left:10,
         fontWeight:"900"
+    },
+    BottomSheetheader :{
+        backgroundColor:"#FFFFFF",
+        shadowColor:"#3333333",
+        shadowOffset:{width: -1 , height:-1},
+        shadowRadius:2,
+        shadowOpacity:0.4,
+        paddingTop:4,
+        borderTopLeftRadius:20,
+        borderTopRightRadius:20,
     }
     
 })
