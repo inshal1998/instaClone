@@ -36,7 +36,6 @@ const FormikPostUploader = ({navigation}) => {
             width: 300,
             height: 400,
             cropping: true,
-            compressImageQuality: 0.7
           }).then(image => {
             console.log(image);
             setthumbnail(image.path);
