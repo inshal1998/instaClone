@@ -24,7 +24,8 @@ const FormikPostUploader = ({navigation}) => {
         ImagePicker.openPicker({
             width: 300,
             height: 400,
-            cropping: true
+            cropping: true,
+            compressImageQuality: 0.7
           }).then(image => {
             console.log(image);
             setthumbnail(image.path);
@@ -35,6 +36,7 @@ const FormikPostUploader = ({navigation}) => {
             width: 300,
             height: 400,
             cropping: true,
+            compressImageQuality: 0.7
           }).then(image => {
             console.log(image);
             setthumbnail(image.path);
