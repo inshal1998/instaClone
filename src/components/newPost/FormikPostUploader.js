@@ -1,4 +1,4 @@
-import React, { createRef, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import * as Yup from "yup";
 import { Formik } from 'formik';
@@ -6,22 +6,42 @@ import { Divider } from 'react-native-elements';
 import Dialog, {
     DialogTitle,
     DialogContent,
-    DialogFooter,
-    DialogButton,
     SlideAnimation,
-    ScaleAnimation,
   } from 'react-native-popup-dialog';
+  import ImagePicker from 'react-native-image-crop-picker';
 
 const FormikPostUploader = ({navigation}) => {
 
     const PlacHolderImg = 'https://www.brownweinraub.com/wp-content/uploads/2017/09/placeholder.jpg'
     const uploadPostSchema = Yup.object().shape({
-        imageUrl : Yup.string().url().required("Image Url is Required"),
+        imageUrl : Yup.string().url("Image Url is Required"),
         caption : Yup.string().max(100 , "Caption has reached Max Character")
     }) 
     const [thumbnail, setthumbnail] = useState(PlacHolderImg)
     const [slideAnimationDialog, setSlideAnimationDialog] = useState(false)
     
+    const takePhotoFromLibrary = ()=>{
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true
+          }).then(image => {
+            console.log(image);
+            setthumbnail(image.path);
+          });
+    }
+    const takePhotoFromCamera = ()=>{
+        ImagePicker.openCamera({
+            width: 300,
+            height: 400,
+            cropping: true,
+          }).then(image => {
+            console.log(image);
+            setthumbnail(image.path);
+          });
+          
+    }
+
     return (
         <Formik 
             initialValues={{caption:'' , imageUrl:""}}
@@ -54,27 +74,29 @@ const FormikPostUploader = ({navigation}) => {
                                     title="Choose To Update Profile"
                                     />
                                 }
+                                
                                 dialogAnimation={
                                     new SlideAnimation({slideFrom: 'bottom'})
                                 }>
                                 <DialogContent>
                                     <View style={{left:25,padding:10,flexDirection:"row" ,width:"80%" , justifyContent:"space-evenly" , alignContent:"space-between"}}>
                                         <View style={{width:"50%",height:60}}> 
-                                                <TouchableOpacity>
+                                                <TouchableOpacity onPress={takePhotoFromLibrary}>
                                                 <Image
                                                 // https://cdn.pixabay.com/photo/2015/12/22/04/00/photo-1103594_1280.png
                                                     style={{height:70,width:70,alignSelf:"center"}}
-                                                source={{uri:"https://cdn-icons-png.flaticon.com/512/833/833539.png"}}
+                                                    source={{uri:"https://cdn-icons-png.flaticon.com/512/833/833539.png"}}
                                                 />
                                                 </TouchableOpacity>
                                         </View>
                                         <View style={{width:"50%",height:40}}>
-                                                <TouchableOpacity>
+                                            <TouchableOpacity onPress={takePhotoFromCamera}>
                                                 <Image
                                                     style={{height:70,width:70,alignSelf:"center"}}
-                                                    source={{uri:"https://cdn-icons.flaticon.com/png/512/238/premium/238438.png?token=exp=1635077856~hmac=f9b40f1053d5989867c1347ecee3a1e9"}}
+                                                    // https://cdn-icons.flaticon.com/png/512/238/premium/238438.png?token=exp=1635077856~hmac=f9b40f1053d5989867c1347ecee3a1e9
+                                                    source={{uri:"https://freeiconshop.com/wp-content/uploads/edd/camera-outline-filled.png"}}
                                                 />
-                                                </TouchableOpacity>
+                                            </TouchableOpacity>
                                         </View>
                                         </View>
                                 </DialogContent>
