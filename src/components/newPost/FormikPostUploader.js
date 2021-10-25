@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Button, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Button, Image, LogBox, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import * as Yup from "yup";
 import { Formik } from 'formik';
 import { Divider } from 'react-native-elements';
@@ -19,7 +19,9 @@ const FormikPostUploader = ({navigation}) => {
     }) 
     const [thumbnail, setthumbnail] = useState(PlacHolderImg)
     const [slideAnimationDialog, setSlideAnimationDialog] = useState(false)
-    
+    useEffect(() => {
+        LogBox.ignoreAllLogs(true)
+    }, [])
     const takePhotoFromLibrary = ()=>{
         ImagePicker.openPicker({
             width: 300,

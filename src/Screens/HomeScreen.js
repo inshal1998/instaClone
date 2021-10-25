@@ -1,5 +1,5 @@
-import React from 'react'
-import { SafeAreaView, StyleSheet,ScrollView, Text, View } from 'react-native'
+import React, { useEffect } from 'react'
+import { SafeAreaView, StyleSheet,ScrollView, Text, View, LogBox } from 'react-native'
 import BottomTabs from '../components/Home/BottomTabs'
 import Header from '../components/Home/Header'
 import Post from '../components/Home/Post'
@@ -7,6 +7,9 @@ import Stories from '../components/Home/Stories'
 import { POST } from '../data/post'
 
 const HomeScreen = ({navigation}) => {
+    useEffect(() => {
+        LogBox.ignoreAllLogs(true)
+    }, [])
     return (    
         <SafeAreaView style={styles.container}>
             <Header navigation={navigation}/>
