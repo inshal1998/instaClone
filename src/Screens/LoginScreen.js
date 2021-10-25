@@ -1,8 +1,11 @@
-import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect } from 'react'
+import { Image, LogBox, StyleSheet, Text, View } from 'react-native'
 import LoginForm from '../components/Login/LoginForm'
 
 const LoginScreen = () => {
+    useEffect(() => {
+        LogBox.ignoreAllLogs(true)
+    }, [])
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
